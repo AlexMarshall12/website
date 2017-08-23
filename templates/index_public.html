@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js'></script>
+<script src="https://cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+<script src="https://cdn.rawgit.com/David-Desmaisons/Vue.Draggable/master/dist/vuedraggable.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<body>
+
+    <div class="header">
+        <h1>Alex Marshall</h1>
+        <ul2>
+            <ul2>
+                <a href="/me">about</a>
+            </ul2>
+            <ul2>
+                <a href="mailto:marshall.a.x@gmail.com">contact</a>
+            </ul2>
+            <ul2>
+                <a href="https://github.com/AlexMarshall12">github</a>
+            </ul2>
+            <ul2>
+                <a href="https://twitter.com/AIexyz">twitter</a>
+            </ul2>
+            <ul2>
+                <a href="https://drive.google.com/file/d/0BzZWWMTKDhSBNHo1dmRoeTAwWmc/view?usp=sharing">cv</a>
+            </ul2>
+            <ul2>
+                <a href="https://www.kaggle.com/alexmarshall/account">kaggle</a>
+            </ul2>
+        </ul2>
+    </div>
+
+<div class="container" id="main">
+    <div class="drag">
+        <ul>
+            <li class='category-item' v-for="(object,category) in data">
+                <h1>${ object.name }</h1>
+                <draggable :id="'category-' + object.category_id" v-model="object.items" :move="checkMove" class="dragArea" :options="{group:'items'}">
+                        <div class="list-item" v-for="(item,key) in object.items" :id="item.id">
+                            <a v-bind:href="'/view/'+item.id"> ${ item.name }</a>
+                        </div>
+                </draggable>
+            </li>
+        </ul>
+        <div id="add-category">
+        </div>
+
+    </div>
+
+</div>
+{% include "header.html" %}
+<script>
+
+
+    var vm = new Vue({
+        el: "#main",
+        delimiters:['${', '}'],
+        data: {{ data | tojson | safe }},
+        methods:{
+            checkMove: function(evt){
+                console.log(evt);
+                axios.post('/organize', {
+                    'futureIndex': evt.draggedContext.futureIndex,
+                    'itemid':evt.dragged._underlying_vm_.id,
+                    'item_name':evt.dragged._underlying_vm_.name,
+                    'index': evt.draggedContext.index,
+                    'from_category':JSON.stringify(evt.from.id),
+                    'to_category':JSON.stringify(evt.to.id)
+                });
+                return true
+            },
+            createItem: function (event) {
+                console.log(event);
+                //window.location.href = '/create';
+            }
+        }
+    });
+
+    function performPostRequest(e) {
+
+        console.log(e.draggedContext);
+        e.preventDefault();
+    }
+</script>
+
+</body>
+</html>

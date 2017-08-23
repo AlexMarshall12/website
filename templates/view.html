@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% include "header.html" %}
+<html>
+<body>
+<h3>
+{{ item.title }}
+</h3>
+<br>
+    {{ content | safe }}
+</body>
+<a class="post__back" href="/">&lt;-- back</a><br>
+<br>
+<a href="{{ url_for('edit',itemid=item.id) }}" class="button">
+        Edit: {{ postname }}
+    </a>
+<html>
