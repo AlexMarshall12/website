@@ -2,11 +2,13 @@
 {% include "header.html" %}
 <html>
 <body>
+<div id="item-content">
 <h3>
 {{ item.title }}
 </h3>
 <br>
     {{ content | safe }}
+</div>
 </body>
 <a class="post__back" href="/">&lt;-- back</a><br>
 <br>

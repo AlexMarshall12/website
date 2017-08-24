@@ -30,6 +30,10 @@ body {
     font-weight: 400;
 }
 
+body #item-content {
+    font-size:115%;
+}
+
 .wrapper h2 {
     color:#ab120d;
     font-size: 1.2em;
